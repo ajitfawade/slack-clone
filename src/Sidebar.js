@@ -16,9 +16,11 @@ import SidebarOption from "./SidebarOption";
 import "./Sidebar.css";
 
 import db from "./firebase";
+import { useStateValue } from "./StateProvider";
 
 const Sidebar = () => {
   const [channels, setChannels] = useState([]);
+  const [{ user }] = useStateValue();
   useEffect(() => {
     // run this code ONCE when the sidebar component loads
     db.collection("rooms").onSnapshot((snapshot) => {
@@ -34,7 +36,7 @@ const Sidebar = () => {
           <h2>Slack Clone</h2>
           <h3>
             <FiberManualRecordIcon />
-            Ajit Fawade
+            {user?.displayName}
           </h3>
         </div>
         <CreateIcon />
