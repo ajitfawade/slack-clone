@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import CreateIcon from "@material-ui/icons/Create";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
@@ -16,11 +17,15 @@ import SidebarOption from "./SidebarOption";
 import "./Sidebar.css";
 
 import db from "./firebase";
-import { useStateValue } from "./StateProvider";
+import { auth } from "./firebase";
+import { useStateValue, StateContext } from "./StateProvider";
 
 const Sidebar = () => {
   const [channels, setChannels] = useState([]);
   const [{ user }] = useStateValue();
+  const { dispatch } = useContext(StateContext);
+  let history = useHistory();
+
   useEffect(() => {
     // run this code ONCE when the sidebar component loads
     db.collection("rooms").onSnapshot((snapshot) => {
@@ -29,6 +34,13 @@ const Sidebar = () => {
       );
     });
   }, []);
+
+  const logout = () => {
+    auth.signOut();
+    dispatch({ type: "SET_USER", user: null });
+    history.push("/");
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -38,6 +50,11 @@ const Sidebar = () => {
             <FiberManualRecordIcon />
             {user?.displayName}
           </h3>
+          <div className="logout">
+            <a href="/" onClick={logout}>
+              Logout
+            </a>
+          </div>
         </div>
         <CreateIcon />
       </div>

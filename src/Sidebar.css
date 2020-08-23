@@ -43,6 +43,14 @@
   color: green;
 }
 
+.sidebar__info > .logout {
+  margin-top: 10px;
+}
+
+.sidebar__info > .logout > a {
+  color: #fbbb45;
+}
+
 .sidebar__header > .MuiSvgIcon-root {
   padding: 8px;
   color: #49274b;
